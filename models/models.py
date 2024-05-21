@@ -13,7 +13,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(30), nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    registered_at: Mapped[TIMESTAMP] = mapped_column(default=datetime.now(timezone.utc))
+    registered_at: Mapped[datetime] = mapped_column(default=datetime.now(timezone.utc))
     #двунаправленная связь между пользователями и зарплатами
     salaries: Mapped[List["Salary"]] = relationship("Salary", back_populates="user")
 
@@ -28,3 +28,5 @@ class Salary(Base):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
     current_salary: Mapped[int] = mapped_column(Integer, nullable=False)
     next_raise_date: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), nullable=False)
+    # двунаправленная связь между зарплатами и пользователями
+    user: Mapped["User"] = relationship("User", back_populates="salaries")

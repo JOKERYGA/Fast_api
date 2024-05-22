@@ -11,6 +11,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30), nullable=False)
     email: Mapped[str] = mapped_column(nullable=False)
     username: Mapped[str] = mapped_column(String(30), nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)

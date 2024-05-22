@@ -1,16 +1,17 @@
 [tool.poetry]
-name = "salary"
+name = "fast-api"
 version = "0.1.0"
 description = ""
 authors = ["Vladislav Glukhovskiy <vlad.gluhovskiy_18376@mail.ru>"]
 license = "MIT"
 readme = "README.md"
-package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "^0.111.0"
-uvicorn = {extras = ["standard"], version = "^0.29.0"}
+fastapi = {extras = ["all"], version = "^0.111.0"}
+sqlalchemy = "^2.0.30"
+alembic = "^1.13.1"
+psycopg2 = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"

@@ -39,5 +39,17 @@ app.include_router(
     tags=["auth"],
 )
 
+
+current_user = fastapi_users.current_user()
+current_active_user = fastapi_users.current_user(active=True)
+current_active_verified_user = fastapi_users.current_user(active=True, verified=True)
+
+
+@app.get("/protected-route")
+def protected_route(user: User = Depends(current_active_verified_user)):
+    """https://fastapi-users.github.io/fastapi-users/10.1/usage/current-user/"""
+    return f"Hello, {user.username}"
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

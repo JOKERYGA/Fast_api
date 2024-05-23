@@ -44,7 +44,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     #     )
     #     password = user_dict.pop("password")
     #     user_dict["hashed_password"] = self.password_helper.hash(password)
-    #     user_dict[] тут можно задать параметры по дефолу
+    #     user_dict["role"] = self.role.hash() тут можно задать параметры по дефолу
 
     #     created_user = await self.user_db.create(user_dict)
 

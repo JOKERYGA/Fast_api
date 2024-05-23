@@ -9,14 +9,10 @@ class User(Base):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
-    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     username: Mapped[str] = mapped_column(String(30), nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
-    registered_at: Mapped[datetime] = mapped_column(default=datetime.now(timezone.utc))
 
-    salaries = relationship(
-        "Salary", back_populates="user", cascade="all, delete-orphan"
-    )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_superuser: Mapped[bool] = mapped_column(
         Boolean, default=False, nullable=False
@@ -41,8 +37,6 @@ class Salary(Base):
     next_raise_date: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False
     )
-
-    user = relationship("User", back_populates="salaries")
 
     def __repr__(self) -> str:
         return f"Salary(id={self.id!r}, user_id={self.user_id!r}, current_salary={self.current_salary!r}, next_raise_date={self.next_raise_date!r})"

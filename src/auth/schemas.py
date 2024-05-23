@@ -26,7 +26,6 @@ class UserCreate(schemas.BaseUserCreate):
     username: str
     email: EmailStr
     password: str
-    registered_at: datetime
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False

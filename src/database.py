@@ -17,13 +17,8 @@ Base: DeclarativeMeta = declarative_base()
 class User(SQLAlchemyBaseUserTable[int], Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
-    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     username: Mapped[str] = mapped_column(String(30), nullable=False, unique=True)
-    registered_at: Mapped[datetime] = mapped_column(default=datetime.now(timezone.utc))
-    #Тут не уверен
-    salaries = relationship(
-        "Salary", back_populates="user", cascade="all, delete-orphan"
-    )
+    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
 
     # поля из SQLAlchemyBaseUserTable
     hashed_password: Mapped[str] = mapped_column(
@@ -37,14 +32,15 @@ class User(SQLAlchemyBaseUserTable[int], Base):
         Boolean, default=False, nullable=False
     )
 
-class Salary(Base):
-    __tablename__ = "salary"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
-    current_salary: Mapped[int] = mapped_column(Integer, nullable=False)
-    next_raise_date: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), nullable=False)
 
-    user = relationship("User", back_populates="salaries")
+# class Salary(Base):
+#     __tablename__ = "salary"
+#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+#     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+#     current_salary: Mapped[int] = mapped_column(Integer, nullable=False)
+#     next_raise_date: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), nullable=False)
+
+#     user = relationship("User", back_populates="salaries")
 
 
 #Точка входа sqlalchemy в приложение(ассинхронная версия)

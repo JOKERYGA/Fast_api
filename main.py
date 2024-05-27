@@ -44,7 +44,7 @@ app.include_router(
 current_active_user = fastapi_users.current_user(active=True)
 
 
-@app.post("/salary")
+@app.get("/salary")
 async def get_salary(
     user: User = Depends(current_active_user),
     db: AsyncSession = Depends(get_async_session),

@@ -1,14 +1,15 @@
-from typing import Annotated
-
-from fastapi import Depends, FastAPI
+import uvicorn
+from alembic.util import status
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from fastapi_users import FastAPIUsers, fastapi_users
 from fastapi_users.authentication import Authenticator
-import uvicorn
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.database import User, get_async_session, Salary
 from src.auth.manager import get_user_manager
 from src.auth.schemas import UserCreate, UserRead
 from src.auth.auth import auth_backend
-from src.database import User
 
 app = FastAPI()
 
@@ -40,15 +41,24 @@ app.include_router(
 )
 
 
-current_user = fastapi_users.current_user()
 current_active_user = fastapi_users.current_user(active=True)
-current_active_verified_user = fastapi_users.current_user(active=True, verified=True)
 
 
-@app.get("/protected-route")
-def protected_route(user: User = Depends(current_active_verified_user)):
-    """https://fastapi-users.github.io/fastapi-users/10.1/usage/current-user/"""
-    return f"Hello, {user.username}"
+@app.post("/salary")
+async def get_salary(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_async_session),
+):
+    result = await db.execute(select(Salary).where(Salary.user_id == user.id))
+    salary = result.scalars().first()
+    if salary:
+        return {
+            "current_salary": salary.current_salary,
+            "next_raise_date": salary.next_raise_date,
+        }
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Salary information not found"
+    )
 
 
 if __name__ == "__main__":

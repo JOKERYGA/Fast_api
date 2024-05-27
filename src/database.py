@@ -33,14 +33,12 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     )
 
 
-# class Salary(Base):
-#     __tablename__ = "salary"
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
-#     current_salary: Mapped[int] = mapped_column(Integer, nullable=False)
-#     next_raise_date: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), nullable=False)
-
-#     user = relationship("User", back_populates="salaries")
+class Salary(Base):
+    __tablename__ = "salary"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+    current_salary: Mapped[int] = mapped_column(Integer, nullable=False)
+    next_raise_date: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), nullable=False)
 
 
 #Точка входа sqlalchemy в приложение(ассинхронная версия)

@@ -50,4 +50,4 @@
     ![Результат](https://github.com/JOKERYGA/foto_git/blob/main/foto.png)
 
 
-
+За основу структуры проекта брал: https://github.com/zhanymkanov/fastapi-best-practices
